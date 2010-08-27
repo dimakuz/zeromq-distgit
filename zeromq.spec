@@ -1,6 +1,6 @@
 Name:           zeromq
-Version:        2.0.7
-Release:        4%{?dist}
+Version:        2.0.8
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -77,7 +77,7 @@ rm %{buildroot}%{_libdir}/libzmq.la
 %defattr(-,root,root,-)
 %{_libdir}/libzmq.so
 %{_libdir}/pkgconfig/libzmq.pc
-%{_includedir}/zmq.*
+%{_includedir}/zmq*
 %{_mandir}/man3/zmq*
 %{_mandir}/man7/zmq*
 
@@ -87,10 +87,12 @@ rm %{buildroot}%{_libdir}/libzmq.la
 %{_bindir}/zmq_forwarder
 %{_bindir}/zmq_queue
 %{_bindir}/zmq_streamer
-%{_mandir}/man1/zmq*
 
 
 %changelog
+* Fri Aug 27 2010 Thomas Spura <tomspur@fedoraproject.org> - 2.0.8-1
+- update to new version
+
 * Fri Jul 23 2010 Thomas Spura <tomspur@fedoraproject.org> - 2.0.7-4
 - upstream VCS changed
 - remove buildroot / %%clean
