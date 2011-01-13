@@ -1,5 +1,5 @@
 Name:           zeromq
-Version:        2.0.8
+Version:        2.0.10
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -11,6 +11,7 @@ Source0:        http://www.zeromq.org/local--files/area:download/zeromq-%{versio
 
 BuildRequires:  glib2-devel
 BuildRequires:  libuuid-devel
+BuildRequires:  chrpath
 
 
 %description
@@ -61,6 +62,11 @@ make install DESTDIR=%{buildroot} INSTALL="install -p"
 # remove *.la
 rm %{buildroot}%{_libdir}/libzmq.la
 
+# remove rpath
+chrpath --delete %{buildroot}/%{_bindir}/zmq_forwarder
+chrpath --delete %{buildroot}/%{_bindir}/zmq_queue
+chrpath --delete %{buildroot}/%{_bindir}/zmq_streamer
+
 
 %post -p /sbin/ldconfig
 
@@ -87,9 +93,15 @@ rm %{buildroot}%{_libdir}/libzmq.la
 %{_bindir}/zmq_forwarder
 %{_bindir}/zmq_queue
 %{_bindir}/zmq_streamer
+%{_mandir}/man1/zmq*
 
 
 %changelog
+* Thu Jan 13 2011 Pavel Zhukov <pavel@zhukoff.net> - 2.0.10-1
+- update version
+- add rpath delete
+- change includedir filelist
+
 * Fri Aug 27 2010 Thomas Spura <tomspur@fedoraproject.org> - 2.0.8-1
 - update to new version
 
