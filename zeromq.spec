@@ -1,6 +1,6 @@
 Name:           zeromq
 Version:        2.0.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -97,6 +97,9 @@ chrpath --delete %{buildroot}/%{_bindir}/zmq_streamer
 
 
 %changelog
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.10-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Thu Jan 13 2011 Pavel Zhukov <pavel@zhukoff.net> - 2.0.10-1
 - update version
 - add rpath delete
