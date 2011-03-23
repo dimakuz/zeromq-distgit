@@ -1,18 +1,20 @@
 Name:           zeromq
-Version:        2.0.10
-Release:        2%{?dist}
+Version:        2.1.3
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
 License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
-Source0:        http://www.zeromq.org/local--files/area:download/zeromq-%{version}.tar.gz
+Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 
 BuildRequires:  glib2-devel
 BuildRequires:  libuuid-devel
-BuildRequires:  chrpath
 
+# utils subpackage was removed in F-16
+# -> can be deleted in F-19
+Obsoletes:      zeromq-utils < 2.1.3-1
 
 %description
 The 0MQ lightweight messaging kernel is a library which extends the
@@ -28,23 +30,12 @@ This package contains the ZeroMQ shared library.
 %package devel
 Summary:        Development files for %{name}
 Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %description devel
 The %{name}-devel package contains libraries and header files for 
 developing applications that use %{name}.
-
-
-%package utils
-Summary:        Utility files for %{name}
-Group:          Development/Tools
-Requires:       %{name} = %{version}-%{release}
-
-
-%description utils
-This package contains ZeroMQ related utility files,
-e.g. zmq_forwarder, zmq_streamer and zmq_queue.
 
 
 %prep
@@ -61,11 +52,6 @@ make install DESTDIR=%{buildroot} INSTALL="install -p"
 
 # remove *.la
 rm %{buildroot}%{_libdir}/libzmq.la
-
-# remove rpath
-chrpath --delete %{buildroot}/%{_bindir}/zmq_forwarder
-chrpath --delete %{buildroot}/%{_bindir}/zmq_queue
-chrpath --delete %{buildroot}/%{_bindir}/zmq_streamer
 
 
 %post -p /sbin/ldconfig
@@ -88,15 +74,12 @@ chrpath --delete %{buildroot}/%{_bindir}/zmq_streamer
 %{_mandir}/man7/zmq*
 
 
-%files utils
-%defattr(-,root,root,-)
-%{_bindir}/zmq_forwarder
-%{_bindir}/zmq_queue
-%{_bindir}/zmq_streamer
-%{_mandir}/man1/zmq*
-
-
 %changelog
+* Wed Mar 23 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.3-1
+- update to new version (#690199)
+- utils subpackage was removed upstream
+  (obsolete it)
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.10-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
