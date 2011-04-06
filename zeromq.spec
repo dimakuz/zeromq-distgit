@@ -1,5 +1,5 @@
 Name:           zeromq
-Version:        2.1.3
+Version:        2.1.4
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -75,6 +75,9 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Wed Apr  6 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.4-1
+- update to new version (#690199)
+
 * Wed Mar 23 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.3-1
 - update to new version (#690199)
 - utils subpackage was removed upstream
