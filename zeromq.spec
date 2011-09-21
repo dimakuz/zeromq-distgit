@@ -41,6 +41,10 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
+# Don't turn warnings into errors
+sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
+    configure
+
 
 %build
 %configure --disable-static
