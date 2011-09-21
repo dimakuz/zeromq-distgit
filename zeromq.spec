@@ -10,7 +10,7 @@ URL:            http://www.zeromq.org
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 
 BuildRequires:  glib2-devel
-%if ! 0%{?epel} > 5
+%if ! (0%{?rhel} > 5)
 BuildRequires:  e2fsprogs-devel
 %else
 BuildRequires:  libuuid-devel
