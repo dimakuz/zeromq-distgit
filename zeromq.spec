@@ -12,6 +12,7 @@ Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 BuildRequires:  glib2-devel
 %if ! (0%{?rhel} > 5)
 BuildRequires:  e2fsprogs-devel
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %else
 BuildRequires:  libuuid-devel
 %endif
