@@ -57,6 +57,7 @@ make %{?_smp_mflags}
 
 
 %install
+rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} INSTALL="install -p"
 
 # remove *.la
