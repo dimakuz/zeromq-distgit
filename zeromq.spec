@@ -1,5 +1,5 @@
 Name:           zeromq
-Version:        2.1.4
+Version:        2.1.9
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -54,6 +54,10 @@ make install DESTDIR=%{buildroot} INSTALL="install -p"
 rm %{buildroot}%{_libdir}/libzmq.la
 
 
+%check
+make check
+
+
 %post -p /sbin/ldconfig
 
 
@@ -75,6 +79,10 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Tue Sep 20 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.9-1
+- update to 2.1.9
+- add check section
+
 * Wed Apr  6 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.4-1
 - update to new version (#690199)
 
