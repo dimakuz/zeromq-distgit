@@ -10,7 +10,11 @@ URL:            http://www.zeromq.org
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 
 BuildRequires:  glib2-devel
+%if ! 0%{?epel} > 5
+BuildRequires:  e2fsprogs-devel
+%else
 BuildRequires:  libuuid-devel
+%endif
 
 # utils subpackage was removed in F-16
 # -> can be deleted in F-19
