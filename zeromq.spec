@@ -10,7 +10,7 @@ URL:            http://www.zeromq.org
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 
 BuildRequires:  glib2-devel
-%if ! (0%{?rhel} > 5)
+%if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
 BuildRequires:  e2fsprogs-devel
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %else
