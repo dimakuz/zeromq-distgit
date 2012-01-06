@@ -1,5 +1,5 @@
 Name:           zeromq
-Version:        2.1.9
+Version:        2.1.11
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -89,6 +89,9 @@ make check
 
 
 %changelog
+* Sat Jan  7 2012 Thomas Spura <tomspur@fedoraproject.org> - 2.1.11-1
+- update to 2.1.11 (as part of rebuilding with gcc-4.7)
+
 * Tue Sep 20 2011 Thomas Spura <tomspur@fedoraproject.org> - 2.1.9-1
 - update to 2.1.9
 - add check section
