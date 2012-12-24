@@ -1,6 +1,8 @@
+%bcond_without pgm
+
 Name:           zeromq
 Version:        2.2.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -15,6 +17,9 @@ BuildRequires:  e2fsprogs-devel
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %else
 BuildRequires:  libuuid-devel
+%endif
+%if %{with pgm}
+BuildRequires:  openpgm-devel >= 5.1
 %endif
 
 # utils subpackage was removed in F-16
@@ -50,9 +55,16 @@ developing applications that use %{name}.
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
     configure
 
+# remove bundled libraries
+rm -rvf foreign/*/*tar*
+
 
 %build
-%configure --disable-static
+%configure \
+%if %{with pgm}
+            --with-system-pgm \
+%endif
+            --disable-static
 make %{?_smp_mflags}
 
 
@@ -89,6 +101,11 @@ make check
 
 
 %changelog
+* Mon Dec 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-3
+- add bcond_without pgm macro (Jose Pedro Oliveira, #867182)
+- remove bundled pgm
+- build against openpgm
+
 * Sun Jul 22 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
