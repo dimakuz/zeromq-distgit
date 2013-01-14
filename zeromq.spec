@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        2.2.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -55,8 +55,8 @@ developing applications that use %{name}.
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
     configure
 
-# remove bundled libraries
-rm -rvf foreign/*/*tar*
+# remove all files in foreign except Makefiles
+rm -v $(find foreign -type f | grep -v Makefile)
 
 
 %build
@@ -101,6 +101,9 @@ make check
 
 
 %changelog
+* Mon Jan 14 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-4
+- delete foreign files with dubious license in %%prep (#892111)
+
 * Mon Dec 24 2012 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-3
 - add bcond_without pgm macro (Jose Pedro Oliveira, #867182)
 - remove bundled pgm
