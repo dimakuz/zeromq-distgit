@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        2.2.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -101,6 +101,9 @@ make check
 
 
 %changelog
+* Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Mon Jan 14 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-4
 - delete foreign files with dubious license in %%prep (#892111)
 
