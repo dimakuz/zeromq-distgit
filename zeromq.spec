@@ -12,6 +12,7 @@ URL:            http://www.zeromq.org
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 
 BuildRequires:  autoconf
+BuildRequires:  automake
 
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
