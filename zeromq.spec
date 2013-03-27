@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        2.2.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -10,6 +10,8 @@ License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
+
+BuildRequires:  autoconf
 
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
@@ -60,6 +62,7 @@ rm -v $(find foreign -type f | grep -v Makefile)
 
 
 %build
+autoreconf -fi
 %configure \
 %if %{with pgm}
             --with-system-pgm \
@@ -101,6 +104,9 @@ make check
 
 
 %changelog
+* Wed Mar 27 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-6
+- run autoreconf before configure so aarch64 is supported (#926859)
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
