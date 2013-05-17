@@ -62,7 +62,7 @@ sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
 # Sed version number of openpgm into configure
 %global openpgm_pc $(basename %{_libdir}/pkgconfig/openpgm*.pc .pc)
 sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
-    configure
+    configure*
 
 
 # remove all files in foreign except Makefiles
