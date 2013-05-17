@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        2.2.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -23,7 +23,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  libuuid-devel
 %endif
 %if %{with pgm}
-BuildRequires:  openpgm-devel >= 5.1
+BuildRequires:  openpgm-devel
 %endif
 
 # utils subpackage was removed in F-16
@@ -58,6 +58,12 @@ developing applications that use %{name}.
 # Don't turn warnings into errors
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
     configure
+
+# Sed version number of openpgm into configure
+%global openpgm_pc $(basename %{_libdir}/pkgconfig/openpgm*.pc .pc)
+sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
+    configure
+
 
 # remove all files in foreign except Makefiles
 rm -v $(find foreign -type f | grep -v Makefile)
@@ -106,6 +112,9 @@ make check
 
 
 %changelog
+* Fri May 17 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-7
+- Rebuilt for openpm-5.2 and sed correct version into configure (#963894)
+
 * Wed Mar 27 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-6
 - run autoreconf before configure so aarch64 is supported (#926859)
 
