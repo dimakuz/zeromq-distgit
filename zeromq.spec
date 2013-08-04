@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        2.2.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -112,6 +112,9 @@ make check
 
 
 %changelog
+* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
 * Fri May 17 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.2.0-7
 - Rebuilt for openpm-5.2 and sed correct version into configure (#963894)
 
