@@ -1,8 +1,8 @@
 %bcond_without pgm
 
 Name:           zeromq
-Version:        2.2.0
-Release:        10%{?dist}
+Version:        4.0.5
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -55,6 +55,9 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
+# zeromq.x86_64: W: file-not-utf8 /usr/share/doc/zeromq/ChangeLog
+iconv -f iso8859-1 -t utf-8 ChangeLog > ChangeLog.conv && mv -f ChangeLog.conv ChangeLog
+
 # Don't turn warnings into errors
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
     configure
@@ -76,7 +79,7 @@ autoreconf -fi
             --with-system-pgm \
 %endif
             --disable-static
-make %{?_smp_mflags}
+make %{?_smp_mflags} V=1
 
 
 %install
@@ -99,7 +102,8 @@ make check
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING COPYING.LESSER NEWS README
+%doc AUTHORS ChangeLog COPYING COPYING.LESSER NEWS README.md
+%{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.*
 
 %files devel
@@ -112,6 +116,9 @@ make check
 
 
 %changelog
+* Mon Nov 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-1
+- update to 4.0.5
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.2.0-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
