@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.0.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -116,6 +116,9 @@ make check
 
 
 %changelog
+* Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 4.0.5-2
+- Rebuilt for GCC 5 C++11 ABI change
+
 * Mon Nov 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-1
 - update to 4.0.5
 
