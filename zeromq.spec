@@ -27,10 +27,6 @@ BuildRequires:  libuuid-devel
 BuildRequires:  openpgm-devel
 %endif
 
-# utils subpackage was removed in F-16
-# -> can be deleted in F-19
-Obsoletes:      zeromq-utils < 2.1.3-1
-
 %description
 The 0MQ lightweight messaging kernel is a library which extends the
 standard socket interfaces with features traditionally provided by
@@ -120,6 +116,7 @@ make check
 %changelog
 * Tue May 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-3
 - Cherry-pick patch for protocol downgrade attack (#1221666)
+- Remove Provides:zeromq-utils
 
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 4.0.5-2
 - Rebuilt for GCC 5 C++11 ABI change
