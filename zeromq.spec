@@ -45,7 +45,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
 %description devel
-The %{name}-devel package contains libraries and header files for 
+The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
@@ -99,13 +99,11 @@ make check
 
 
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING COPYING.LESSER NEWS README.md
 %{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.*
 
 %files devel
-%defattr(-,root,root,-)
 %{_libdir}/libzmq.so
 %{_libdir}/pkgconfig/libzmq.pc
 %{_includedir}/zmq*
@@ -117,6 +115,7 @@ make check
 * Tue May 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-3
 - Cherry-pick patch for protocol downgrade attack (#1221666)
 - Remove Provides:zeromq-utils
+- Remove %%defattr
 
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 4.0.5-2
 - Rebuilt for GCC 5 C++11 ABI change
