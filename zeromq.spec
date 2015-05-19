@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.0.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -10,6 +10,7 @@ License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
+Patch0:         zeromq-4.0.5-downgrade-attack.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -54,6 +55,7 @@ developing applications that use %{name}.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # zeromq.x86_64: W: file-not-utf8 /usr/share/doc/zeromq/ChangeLog
 iconv -f iso8859-1 -t utf-8 ChangeLog > ChangeLog.conv && mv -f ChangeLog.conv ChangeLog
@@ -116,6 +118,9 @@ make check
 
 
 %changelog
+* Tue May 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-3
+- Cherry-pick patch for protocol downgrade attack (#1221666)
+
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 4.0.5-2
 - Rebuilt for GCC 5 C++11 ABI change
 
