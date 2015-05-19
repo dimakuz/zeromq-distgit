@@ -114,7 +114,7 @@ make check
 %changelog
 * Tue May 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-3
 - Cherry-pick patch for protocol downgrade attack (#1221666)
-- Remove Provides:zeromq-utils
+- Remove Obsoletes:zeromq-utils
 - Remove %%defattr
 
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 4.0.5-2
