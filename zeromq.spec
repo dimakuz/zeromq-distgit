@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.0.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -11,6 +11,8 @@ URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
 Patch0:         zeromq-4.0.5-downgrade-attack.patch
+Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
+Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -49,9 +51,22 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
+%package -n cppzmq-devel
+Summary:        Development files for cppzmq
+Group:          Development/Libraries
+License:        MIT
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
+
+
+%description -n cppzmq-devel
+The cppzmq-devel package contains libraries and header files for
+developing applications that use the C++ header files of %{name}.
+
+
 %prep
 %setup -q
 %patch0 -p1
+cp -a %{SOURCE2} .
 
 # zeromq.x86_64: W: file-not-utf8 /usr/share/doc/zeromq/ChangeLog
 iconv -f iso8859-1 -t utf-8 ChangeLog > ChangeLog.conv && mv -f ChangeLog.conv ChangeLog
@@ -83,6 +98,7 @@ make %{?_smp_mflags} V=1
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} INSTALL="install -p"
+install -m 644 -p %{SOURCE1} %{buildroot}%{_includedir}/
 
 # remove *.la
 rm %{buildroot}%{_libdir}/libzmq.la
@@ -99,19 +115,28 @@ make check
 
 
 %files
-%doc AUTHORS ChangeLog COPYING COPYING.LESSER NEWS README.md
+%doc AUTHORS ChangeLog NEWS README.md
+%license COPYING COPYING.LESSER
 %{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.*
 
 %files devel
 %{_libdir}/libzmq.so
 %{_libdir}/pkgconfig/libzmq.pc
-%{_includedir}/zmq*
+%{_includedir}/zmq*.h
 %{_mandir}/man3/zmq*
 %{_mandir}/man7/zmq*
 
+%files -n cppzmq-devel
+%license LICENSE
+%{_includedir}/zmq.hpp
+
 
 %changelog
+* Mon Jun 08 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-4
+- Add zmq.hpp, which originally belonged to zeromq:
+  https://github.com/zeromq/cppzmq/issues/48
+
 * Tue May 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-3
 - Cherry-pick patch for protocol downgrade attack (#1221666, CVE-2014-9721)
 - Remove Obsoletes:zeromq-utils
