@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.0.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -133,6 +133,9 @@ make check
 
 
 %changelog
+* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.5-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon Jun 08 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.0.5-4
 - Add zmq.hpp, which originally belonged to zeromq:
   https://github.com/zeromq/cppzmq/issues/48
