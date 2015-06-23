@@ -17,6 +17,7 @@ Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
+BuildRequires:  libsodium-devel
 
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
