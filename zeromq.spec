@@ -1,8 +1,8 @@
 %bcond_without pgm
 
 Name:           zeromq
-Version:        4.0.5
-Release:        5%{?dist}
+Version:        4.1.2
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -10,7 +10,7 @@ License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
-Patch0:         zeromq-4.0.5-downgrade-attack.patch
+Patch0:         zeromq-4.1.2-ipv6.patch
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 
@@ -81,10 +81,6 @@ sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
     configure*
 
 
-# remove all files in foreign except Makefiles
-rm -v $(find foreign -type f | grep -v Makefile)
-
-
 %build
 autoreconf -fi
 %configure \
@@ -105,7 +101,7 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %check
-make check
+make check V=1
 
 
 %post -p /sbin/ldconfig
@@ -115,7 +111,7 @@ make check
 
 
 %files
-%doc AUTHORS ChangeLog NEWS README.md
+%doc AUTHORS ChangeLog MAINTAINERS NEWS
 %license COPYING COPYING.LESSER
 %{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.*
@@ -133,6 +129,10 @@ make check
 
 
 %changelog
+* Tue Jun 23 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.2-1
+- update to 4.1.2
+- add upstream patch to fix problem with ipv6
+
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.5-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
