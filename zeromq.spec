@@ -1,7 +1,7 @@
 %bcond_without pgm
 
 Name:           zeromq
-Version:        4.1.2
+Version:        4.1.3
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -10,7 +10,6 @@ License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
-Patch0:         zeromq-4.1.2-ipv6.patch
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 
@@ -66,7 +65,6 @@ developing applications that use the C++ header files of %{name}.
 
 %prep
 %setup -q
-%patch0 -p1
 cp -a %{SOURCE2} .
 
 # zeromq.x86_64: W: file-not-utf8 /usr/share/doc/zeromq/ChangeLog
@@ -130,6 +128,11 @@ make check V=1
 
 
 %changelog
+* Mon Aug 24 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.3-1
+- update to 4.1.3 (#1256209)
+- ipv6 patch included upstream
+- refresh zmq.hpp
+
 * Tue Jun 23 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.2-1
 - update to 4.1.2
 - add upstream patch to fix problem with ipv6
