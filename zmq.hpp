@@ -86,6 +86,12 @@ typedef struct {
 } zmq_event_t;
 #endif
 
+// Avoid using deprecated message receive function when possible
+#if ZMQ_VERSION < ZMQ_MAKE_VERSION(3, 2, 0)
+#  define zmq_msg_recv(msg, socket, flags) zmq_recvmsg(socket, msg, flags)
+#endif
+
+
 // In order to prevent unused variable warnings when building in non-debug
 // mode use this macro to make assertions.
 #ifndef NDEBUG
@@ -121,9 +127,9 @@ namespace zmq
         int errnum;
     };
 
-    inline int poll (zmq_pollitem_t const* items_, int nitems_, long timeout_ = -1)
+    inline int poll (zmq_pollitem_t const* items_, size_t nitems_, long timeout_ = -1)
     {
-        int rc = zmq_poll (const_cast<zmq_pollitem_t*>(items_), nitems_, timeout_);
+        int rc = zmq_poll (const_cast<zmq_pollitem_t*>(items_), static_cast<int>(nitems_), timeout_);
         if (rc < 0)
             throw error_t ();
         return rc;
@@ -131,7 +137,7 @@ namespace zmq
 
     inline int poll(zmq_pollitem_t const* items, size_t nitems)
     {
-        return poll(items, nitems, -1 );
+        return poll(items, nitems, -1);
     }
 
     #ifdef ZMQ_CPP11
@@ -144,12 +150,12 @@ namespace zmq
     {
         return poll(items.data(), items.size(), timeout.count() );
     }
-    #endif
 
     inline int poll(std::vector<zmq_pollitem_t> const& items, long timeout_ = -1)
     {
         return poll(items.data(), items.size(), timeout_);
     }
+    #endif
 
 
 
@@ -207,13 +213,26 @@ namespace zmq
             msg()
         {
             typedef typename std::iterator_traits<I>::difference_type size_type;
-            typedef typename std::iterator_traits<I>::pointer pointer_t;
+            typedef typename std::iterator_traits<I>::value_type value_t;
 
-            size_type const size_ = std::distance(first, last);
+            size_type const size_ = std::distance(first, last)*sizeof(value_t);
             int const rc = zmq_msg_init_size (&msg, size_);
             if (rc != 0)
                 throw error_t ();
-            std::copy(first, last, static_cast<pointer_t>(zmq_msg_data (&msg)) );
+            value_t* dest = data<value_t>();
+            while (first != last)
+            {
+                *dest = *first;
+                ++dest; ++first;
+            }
+        }
+
+        inline message_t (const void *data_, size_t size_)
+        {
+            int rc = zmq_msg_init_size (&msg, size_);
+            if (rc != 0)
+                throw error_t ();
+            memcpy(data(), data_, size_);
         }
 
         inline message_t (void *data_, size_t size_, free_fn *ffn_,
@@ -263,6 +282,17 @@ namespace zmq
             rc = zmq_msg_init_size (&msg, size_);
             if (rc != 0)
                 throw error_t ();
+        }
+
+        inline void rebuild (const void *data_, size_t size_)
+        {
+            int rc = zmq_msg_close (&msg);
+            if (rc != 0)
+                throw error_t ();
+            rc = zmq_msg_init_size (&msg, size_);
+            if (rc != 0)
+                throw error_t ();
+            memcpy(data(), data_, size_);
         }
 
         inline void rebuild (void *data_, size_t size_, free_fn *ffn_,
@@ -372,16 +402,14 @@ namespace zmq
 
         inline ~context_t () ZMQ_NOTHROW
         {
-            close();
+            int rc = zmq_ctx_destroy (ptr);
+            ZMQ_ASSERT (rc == 0);
         }
 
         inline void close() ZMQ_NOTHROW
         {
-            if (ptr == NULL)
-                return;
-            int rc = zmq_ctx_destroy (ptr);
+            int rc = zmq_ctx_shutdown (ptr);
             ZMQ_ASSERT (rc == 0);
-            ptr = NULL;
         }
 
         //  Be careful with this, it's probably only useful for
@@ -417,8 +445,12 @@ namespace zmq
         xsub = ZMQ_XSUB,
         push = ZMQ_PUSH,
         pull = ZMQ_PULL,
+#if ZMQ_VERSION_MAJOR < 4
+        pair = ZMQ_PAIR
+#else
         pair = ZMQ_PAIR,
         stream = ZMQ_STREAM
+#endif
     };
     #endif
 
@@ -489,14 +521,14 @@ namespace zmq
         }
 
         inline void getsockopt (int option_, void *optval_,
-            size_t *optvallen_)
+            size_t *optvallen_) const
         {
             int rc = zmq_getsockopt (ptr, option_, optval_, optvallen_);
             if (rc != 0)
                 throw error_t ();
         }
 
-        template<typename T> T getsockopt(int option_)
+        template<typename T> T getsockopt(int option_) const
         {
             T optval;
             size_t optlen = sizeof(T);
@@ -655,7 +687,7 @@ namespace zmq
             while (true) {
                 zmq_msg_t eventMsg;
                 zmq_msg_init (&eventMsg);
-                rc = zmq_recvmsg (s, &eventMsg, 0);
+                rc = zmq_msg_recv (&eventMsg, s, 0);
                 if (rc == -1 && zmq_errno() == ETERM)
                     break;
                 assert (rc != -1);
@@ -672,7 +704,7 @@ namespace zmq
 #ifdef ZMQ_NEW_MONITOR_EVENT_LAYOUT
                 zmq_msg_t addrMsg;
                 zmq_msg_init (&addrMsg);
-                rc = zmq_recvmsg (s, &addrMsg, 0);
+                rc = zmq_msg_recv (&addrMsg, s, 0);
                 if (rc == -1 && zmq_errno() == ETERM)
                     break;
                 assert (rc != -1);

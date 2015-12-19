@@ -1,7 +1,7 @@
 %bcond_without pgm
 
 Name:           zeromq
-Version:        4.1.3
+Version:        4.1.4
 Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
@@ -128,6 +128,10 @@ make check V=1
 
 
 %changelog
+* Sat Dec 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-1
+- update to 4.1.4 (#1292814)
+- refresh zmq.hpp
+
 * Mon Aug 24 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.3-1
 - update to 4.1.3 (#1256209)
 - ipv6 patch included upstream
