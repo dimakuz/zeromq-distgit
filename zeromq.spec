@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -27,6 +27,7 @@ BuildRequires:  libuuid-devel
 %endif
 %if %{with pgm}
 BuildRequires:  openpgm-devel
+BuildRequires:  krb5-devel
 %endif
 
 %description
@@ -84,7 +85,8 @@ sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
 autoreconf -fi
 %configure \
 %if %{with pgm}
-            --with-system-pgm \
+            --with-pgm \
+            --with-libgssapi_krb5 \
 %endif
             --disable-static
 make %{?_smp_mflags} V=1
@@ -128,6 +130,9 @@ make check V=1
 
 
 %changelog
+* Sun Jan 24 2016 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-2
+- Enable krb5 and fix building of pgm (#1301197)
+
 * Sat Dec 19 2015 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-1
 - update to 4.1.4 (#1292814)
 - refresh zmq.hpp
