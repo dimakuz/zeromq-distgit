@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -130,6 +130,9 @@ make check V=1
 
 
 %changelog
+* Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
 * Sun Jan 24 2016 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-2
 - Enable krb5 and fix building of pgm (#1301197)
 
