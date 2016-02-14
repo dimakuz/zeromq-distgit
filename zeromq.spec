@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -83,6 +83,9 @@ sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
 
 %build
 autoreconf -fi
+# Don't turn warnings into errors
+sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
+    configure
 %configure \
 %if %{with pgm}
             --with-pgm \
@@ -130,6 +133,9 @@ make check V=1
 
 
 %changelog
+* Sun Feb 14 2016 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-4
+- Remove Werror from compile flags
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
