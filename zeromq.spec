@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -133,6 +133,9 @@ make check V=1
 
 
 %changelog
+* Mon Mar 07 2016 Remi Collet <remi@fedoraproject.org> - 4.1.4-5
+- rebuild for new libsodium soname
+
 * Sun Feb 14 2016 Thomas Spura <tomspur@fedoraproject.org> - 4.1.4-4
 - Remove Werror from compile flags
 
