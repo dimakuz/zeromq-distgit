@@ -1,15 +1,15 @@
 %bcond_without pgm
 
 Name:           zeromq
-Version:        4.1.4
-Release:        5%{?dist}
+Version:        4.1.6
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
 License:        LGPLv3+
 URL:            http://www.zeromq.org
 # VCS:          git:http://github.com/zeromq/zeromq2.git
-Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
+Source0:        https://github.com/zeromq/zeromq4-1/releases/download/v%{version}/zeromq-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 
@@ -124,8 +124,6 @@ make check V=1
 %{_libdir}/libzmq.so
 %{_libdir}/pkgconfig/libzmq.pc
 %{_includedir}/zmq*.h
-%{_mandir}/man3/zmq*
-%{_mandir}/man7/zmq*
 
 %files -n cppzmq-devel
 %license LICENSE
@@ -133,6 +131,9 @@ make check V=1
 
 
 %changelog
+* Sun Nov 13 2016 Thomas Spura <tomspur@fedoraproject.org> - 4.1.6-1
+- update to 4.1.6
+
 * Mon Mar 07 2016 Remi Collet <remi@fedoraproject.org> - 4.1.4-5
 - rebuild for new libsodium soname
 
