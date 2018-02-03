@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.6
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -108,10 +108,7 @@ rm %{buildroot}%{_libdir}/libzmq.la
 make check V=1
 
 
-%post -p /sbin/ldconfig
-
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 
 %files
@@ -131,6 +128,9 @@ make check V=1
 
 
 %changelog
+* Sat Feb 03 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 4.1.6-7
+- Switch to %%ldconfig_scriptlets
+
 * Mon Oct 02 2017 Remi Collet <remi@fedoraproject.org> - 4.1.6-6
 - rebuild for libsodium
 
