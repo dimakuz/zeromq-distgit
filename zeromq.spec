@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.6
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -128,6 +128,9 @@ make check V=1
 
 
 %changelog
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.6-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Sat Feb 03 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 4.1.6-7
 - Switch to %%ldconfig_scriptlets
 
