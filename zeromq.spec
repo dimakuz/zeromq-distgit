@@ -21,7 +21,6 @@ BuildRequires:  libsodium-devel
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
 BuildRequires:  e2fsprogs-devel
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %else
 BuildRequires:  libuuid-devel
 %endif
