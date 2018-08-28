@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.6
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -17,6 +17,7 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  libsodium-devel
+BuildRequires:  gcc-c++
 
 BuildRequires:  glib2-devel
 %if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
@@ -127,6 +128,9 @@ make check V=1
 
 
 %changelog
+* Tue Aug 28 2018 Pavel Zhukov <landgraf@fedoraproject.org> - 4.1.6-10
+- Add gcc-c++ BR
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.1.6-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
