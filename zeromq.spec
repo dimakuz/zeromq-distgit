@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.1.6
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Software library for fast, message-based applications
 
 License:        LGPLv3+
@@ -10,6 +10,7 @@ URL:            http://www.zeromq.org
 Source0:        https://github.com/zeromq/zeromq4-1/releases/download/v%{version}/zeromq-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
+Patch0001:      https://github.com/zeromq/libzmq/pull/1260.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -57,7 +58,7 @@ developing applications that use the C++ header files of %{name}.
 
 
 %prep
-%setup -q
+%autosetup -p1
 cp -a %{SOURCE2} .
 
 # Don't turn warnings into errors
@@ -108,6 +109,10 @@ make check V=1
 
 
 %changelog
+* Mon Jan 21 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.1.6-11
+- Backport patch to fix test failures in build
+- Cleanup spec a little
+
 * Tue Aug 28 2018 Pavel Zhukov <landgraf@fedoraproject.org> - 4.1.6-10
 - Add gcc-c++ BR
 
