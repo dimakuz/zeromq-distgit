@@ -96,7 +96,7 @@ make check V=1
 %doc AUTHORS ChangeLog MAINTAINERS NEWS
 %license COPYING COPYING.LESSER
 %{_bindir}/curve_keygen
-%{_libdir}/libzmq.so.*
+%{_libdir}/libzmq.so.5*
 
 %files devel
 %{_libdir}/libzmq.so
@@ -112,6 +112,7 @@ make check V=1
 * Mon Jan 21 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.1.6-11
 - Backport patch to fix test failures in build
 - Cleanup spec a little
+- Use explicit soname version in file list
 
 * Tue Aug 28 2018 Pavel Zhukov <landgraf@fedoraproject.org> - 4.1.6-10
 - Add gcc-c++ BR
