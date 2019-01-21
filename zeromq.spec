@@ -5,10 +5,8 @@ Version:        4.1.6
 Release:        10%{?dist}
 Summary:        Software library for fast, message-based applications
 
-Group:          System Environment/Libraries
 License:        LGPLv3+
 URL:            http://www.zeromq.org
-# VCS:          git:http://github.com/zeromq/zeromq2.git
 Source0:        https://github.com/zeromq/zeromq4-1/releases/download/v%{version}/zeromq-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
@@ -20,11 +18,7 @@ BuildRequires:  libsodium-devel
 BuildRequires:  gcc-c++
 
 BuildRequires:  glib2-devel
-%if ! (0%{?fedora} > 12 || 0%{?rhel} > 5)
-BuildRequires:  e2fsprogs-devel
-%else
 BuildRequires:  libuuid-devel
-%endif
 %if %{with pgm}
 BuildRequires:  openpgm-devel
 BuildRequires:  krb5-devel
@@ -43,7 +37,6 @@ This package contains the ZeroMQ shared library.
 
 %package devel
 Summary:        Development files for %{name}
-Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 
@@ -54,7 +47,6 @@ developing applications that use %{name}.
 
 %package -n cppzmq-devel
 Summary:        Development files for cppzmq
-Group:          Development/Libraries
 License:        MIT
 Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
 
@@ -68,36 +60,24 @@ developing applications that use the C++ header files of %{name}.
 %setup -q
 cp -a %{SOURCE2} .
 
-# zeromq.x86_64: W: file-not-utf8 /usr/share/doc/zeromq/ChangeLog
-iconv -f iso8859-1 -t utf-8 ChangeLog > ChangeLog.conv && mv -f ChangeLog.conv ChangeLog
-
 # Don't turn warnings into errors
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
-    configure
-
-# Sed version number of openpgm into configure
-%global openpgm_pc $(basename %{_libdir}/pkgconfig/openpgm*.pc .pc)
-sed -i "s/openpgm-[0-9].[0-9]/%{openpgm_pc}/g" \
-    configure*
+    configure.ac
 
 
 %build
 autoreconf -fi
-# Don't turn warnings into errors
-sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
-    configure
 %configure \
 %if %{with pgm}
             --with-pgm \
             --with-libgssapi_krb5 \
 %endif
             --disable-static
-make %{?_smp_mflags} V=1
+%make_build
 
 
 %install
-rm -rf %{buildroot}
-make install DESTDIR=%{buildroot} INSTALL="install -p"
+%make_install
 install -m 644 -p %{SOURCE1} %{buildroot}%{_includedir}/
 
 # remove *.la
