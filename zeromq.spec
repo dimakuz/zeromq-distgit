@@ -11,6 +11,7 @@ Source0:        https://github.com/zeromq/zeromq4-1/releases/download/v%{version
 Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
 Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
 Patch0001:      https://github.com/zeromq/libzmq/pull/1260.patch
+Patch0002:      https://github.com/zeromq/libzmq/pull/1574.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -86,7 +87,8 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %check
-make check V=1
+make check V=1 || ( cat test-suite.log && exit 1 )
+
 
 
 %ldconfig_scriptlets
@@ -110,7 +112,7 @@ make check V=1
 
 %changelog
 * Mon Jan 21 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.1.6-11
-- Backport patch to fix test failures in build
+- Backport patches to fix test failures in build
 - Cleanup spec a little
 - Use explicit soname version in file list
 
