@@ -1,26 +1,26 @@
 %bcond_without pgm
 
+# TODO: Split into a separate package?
+%global cppzmq_version 4.3.0
+
 Name:           zeromq
-Version:        4.1.6
-Release:        11%{?dist}
+Version:        4.3.1
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 License:        LGPLv3+
 URL:            http://www.zeromq.org
-Source0:        https://github.com/zeromq/zeromq4-1/releases/download/v%{version}/zeromq-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp
-Source2:        https://raw.githubusercontent.com/zeromq/cppzmq/master/LICENSE
-Patch0001:      https://github.com/zeromq/libzmq/pull/1260.patch
-Patch0002:      https://github.com/zeromq/libzmq/pull/1574.patch
+Source0:        https://github.com/zeromq/libzmq/archive/v%{version}/libzmq-%{version}.tar.gz
+Source1:        https://github.com/zeromq/cppzmq/raw/v%{cppzmq_version}/zmq.hpp
+Source2:        https://github.com/zeromq/cppzmq/raw/v%{cppzmq_version}/LICENSE
 
 BuildRequires:  autoconf
 BuildRequires:  automake
+BuildRequires:  gcc-c++
 BuildRequires:  libtool
 BuildRequires:  libsodium-devel
-BuildRequires:  gcc-c++
+BuildRequires:  libunwind-devel
 
-BuildRequires:  glib2-devel
-BuildRequires:  libuuid-devel
 %if %{with pgm}
 BuildRequires:  openpgm-devel
 BuildRequires:  krb5-devel
@@ -49,6 +49,7 @@ developing applications that use %{name}.
 
 %package -n cppzmq-devel
 Summary:        Development files for cppzmq
+Version:        %{cppzmq_version}
 License:        MIT
 Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
 
@@ -59,12 +60,14 @@ developing applications that use the C++ header files of %{name}.
 
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n libzmq-%{version}
 cp -a %{SOURCE2} .
 
-# Don't turn warnings into errors
-sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
-    configure.ac
+# Remove bundled code.
+rm -rf external/wepoll
+
+# Fix permissions.
+chmod -x src/xsub.hpp
 
 
 %build
@@ -74,6 +77,9 @@ autoreconf -fi
             --with-pgm \
             --with-libgssapi_krb5 \
 %endif
+            --with-libsodium \
+            --enable-libunwind \
+            --disable-Werror \
             --disable-static
 %make_build
 
@@ -95,7 +101,7 @@ make check V=1 || ( cat test-suite.log && exit 1 )
 
 
 %files
-%doc AUTHORS ChangeLog MAINTAINERS NEWS
+%doc README.md AUTHORS NEWS
 %license COPYING COPYING.LESSER
 %{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.5*
@@ -111,6 +117,9 @@ make check V=1 || ( cat test-suite.log && exit 1 )
 
 
 %changelog
+* Tue Jan 22 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.3.1-1
+- Update to latest version of libzmq and cppzmq
+
 * Mon Jan 21 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.1.6-11
 - Backport patches to fix test failures in build
 - Cleanup spec a little
