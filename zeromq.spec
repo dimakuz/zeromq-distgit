@@ -1,8 +1,5 @@
 %bcond_without pgm
 
-# TODO: Split into a separate package?
-%global cppzmq_version 4.3.0
-
 Name:           zeromq
 Version:        4.3.1
 Release:        1%{?dist}
@@ -11,8 +8,6 @@ Summary:        Software library for fast, message-based applications
 License:        LGPLv3+
 URL:            http://www.zeromq.org
 Source0:        https://github.com/zeromq/libzmq/archive/v%{version}/libzmq-%{version}.tar.gz
-Source1:        https://github.com/zeromq/cppzmq/raw/v%{cppzmq_version}/zmq.hpp
-Source2:        https://github.com/zeromq/cppzmq/raw/v%{cppzmq_version}/LICENSE
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -47,21 +42,8 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
-%package -n cppzmq-devel
-Summary:        Development files for cppzmq
-Version:        %{cppzmq_version}
-License:        MIT
-Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
-
-
-%description -n cppzmq-devel
-The cppzmq-devel package contains libraries and header files for
-developing applications that use the C++ header files of %{name}.
-
-
 %prep
 %autosetup -p1 -n libzmq-%{version}
-cp -a %{SOURCE2} .
 
 # Remove bundled code.
 rm -rf external/wepoll
@@ -86,7 +68,6 @@ autoreconf -fi
 
 %install
 %make_install
-install -m 644 -p %{SOURCE1} %{buildroot}%{_includedir}/
 
 # remove *.la
 rm %{buildroot}%{_libdir}/libzmq.la
@@ -111,14 +92,11 @@ make check V=1 || ( cat test-suite.log && exit 1 )
 %{_libdir}/pkgconfig/libzmq.pc
 %{_includedir}/zmq*.h
 
-%files -n cppzmq-devel
-%license LICENSE
-%{_includedir}/zmq.hpp
-
 
 %changelog
 * Tue Jan 22 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.3.1-1
 - Update to latest version of libzmq and cppzmq
+- Split cppzmq subpackage into its own package
 
 * Mon Jan 21 2019 Elliott Sales de Andrade <quantum.analyst@gmail.com> - 4.1.6-11
 - Backport patches to fix test failures in build
