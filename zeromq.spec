@@ -2,7 +2,7 @@
 
 Name:           zeromq
 Version:        4.3.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Software library for fast, message-based applications
 
 License:        LGPLv3+
@@ -59,6 +59,7 @@ autoreconf -fi
             --with-pgm \
             --with-libgssapi_krb5 \
 %endif
+            --enable-drafts \
             --with-libsodium \
             --enable-libunwind \
             --disable-Werror \
